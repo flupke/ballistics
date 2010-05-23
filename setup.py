@@ -5,14 +5,18 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 
 
-ext_modules = [
-        Extension(
-            "ballistics.linearmath.vector3",
-            ["ballistics/linearmath/vector3.pyx"], 
-            libraries=["BulletDynamics"], 
-            language="c++"),
+wrapper_modules = [
+        ("ballistics.linearmath.vector3", "BulletDynamics"),
+        ("ballistics.linearmath.quaternion", "BulletDynamics"),
     ]
 
+ext_modules = []
+for module, lib in wrapper_modules:
+    ext_modules.append(Extension(
+        module,
+        [module.replace(".", "/") + ".pyx"],
+        libraries=[lib], 
+        language="c++"))
 
 setup(
     name = "ballistics",
@@ -40,4 +44,3 @@ setup(
     
     cmdclass = {"build_ext": build_ext},
 )
-

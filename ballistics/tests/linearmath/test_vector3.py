@@ -1,6 +1,6 @@
 from nose.tools import assert_equal, assert_almost_equal
 import math
-from ballistics.linearmath import Vector3 #, Quaternion, Matrix3x3, Transform
+from ballistics.linearmath import Vector3 
 
 
 def test_basic():
