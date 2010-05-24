@@ -8,6 +8,7 @@ from Cython.Distutils import build_ext
 wrapper_modules = [
         ("ballistics.linearmath.vector3", "BulletDynamics"),
         ("ballistics.linearmath.quaternion", "BulletDynamics"),
+        ("ballistics.linearmath.matrix3x3", "BulletDynamics"),
     ]
 
 ext_modules = []

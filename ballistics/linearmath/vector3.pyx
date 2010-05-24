@@ -69,7 +69,7 @@ cdef class Vector3:
         """Return a normalized version of this vector."""
         return from_c_obj(self.wrapped.normalized())
 
-    def rotate(self, Vector3 w_axis, float angle):
+    def rotate(self, Vector3 w_axis, btScalar angle):
         """Rotate this vector."""
         return from_c_obj(self.wrapped.rotate(w_axis.wrapped[0], angle))
 
@@ -110,10 +110,10 @@ cdef class Vector3:
     def closestAxis(self):
         return self.wrapped.closestAxis()
 
-    def setInterpolate3(self, Vector3 v0, Vector3 v1, float rt):
+    def setInterpolate3(self, Vector3 v0, Vector3 v1, btScalar rt):
         self.wrapped.setInterpolate3(v0.wrapped[0], v1.wrapped[0], rt)
 
-    def lerp(self, Vector3 v, float t):
+    def lerp(self, Vector3 v, btScalar t):
         """Return the linear interpolation between this and another vector."""
         return from_c_obj(self.wrapped.lerp(v.wrapped[0], t))
     
@@ -131,7 +131,7 @@ cdef class Vector3:
         """
         self.wrapped.setMin(other.wrapped[0])
 
-    def setValue(self, float x, float y, float z):
+    def setValue(self, btScalar x, btScalar y, btScalar z):
         self.wrapped.setValue(x, y, z)
 
     def getSkewSymmetricMatrix(self, Vector3 v0, Vector3 v1, Vector3 v2):
