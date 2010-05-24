@@ -153,7 +153,7 @@ cdef class Vector3:
         """
         return Vector3(self.x, self.y, self.z)
 
-    def __iadd__(self, Vector3 other):
+    def __iadd__(self, other):
         self.x = self.x + other.x
         self.y = self.y + other.y
         self.z = self.z + other.z
