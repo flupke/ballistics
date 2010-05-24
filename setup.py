@@ -9,6 +9,7 @@ wrapper_modules = [
         ("ballistics.linearmath.vector3", "BulletDynamics"),
         ("ballistics.linearmath.quaternion", "BulletDynamics"),
         ("ballistics.linearmath.matrix3x3", "BulletDynamics"),
+        ("ballistics.linearmath.transform", "BulletDynamics"),
     ]
 
 ext_modules = []

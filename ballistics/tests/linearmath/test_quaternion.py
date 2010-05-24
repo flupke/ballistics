@@ -1,4 +1,4 @@
-from nose.tools import assert_equal, assert_almost_equal
+from nose.tools import assert_equal, assert_almost_equal, assert_raises
 import math
 from ballistics.linearmath import Quaternion, Vector3
 
@@ -69,6 +69,7 @@ def test_methods():
     # Overloaded operators
     assert_equal(base * 10, Quaternion(0, 0, 20, 10))
     assert_equal(base / 10, Quaternion(0, 0, 0.2, 0.1))
+    assert_raises(TypeError, lambda: 10 / base)
     assert_equal(base + other, Quaternion(0, 2, 2, 2))
     assert_equal(base - other, Quaternion(0, -2, 2, 0))
     assert_equal(-base, Quaternion(0, 0, -2, -1))

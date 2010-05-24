@@ -41,3 +41,6 @@ cdef extern from "LinearMath/btQuaternion.h":
 cdef class Quaternion:
 
     cdef btQuaternion *wrapped
+
+
+cdef from_c_obj(btQuaternion quat)

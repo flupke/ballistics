@@ -47,38 +47,53 @@ cdef class Matrix3x3:
         """Set the values of the matrix explicitly (row major)."""
         self.wrapped.setValue(xx, xy, xz, yx, yy, yz, zx, zy, zz)
 
-    def setRotation(self, Quaternion q):
-        """Set the matrix from a quaternion."""
-        self.wrapped.setRotation(q.wrapped[0])
-    
     def setIdentity(self):
         """Set the matrix to the identity."""
         self.wrapped.setIdentity()
 
-    def setFromOpenGLSubMatrix(self, m):
-        """Set from a carray of btScalars."""
-        cdef btScalar tmp[12]
-        m = m.flatten()
-        if m.shape != (12,):
-            raise ValueError("input array must have 12 elements")
-        for i in range(12):
-            tmp[i] = m[i]
-        self.wrapped.setFromOpenGLSubMatrix(tmp)
-
     def getOpenGLSubMatrix(self):
-        """Return the matrix as a 12 elements flat numpy array."""
-        cdef btScalar m[12]
-        cdef np.ndarray ret = np.empty(12)
+        """Return the matrix as a 16 elements flat numpy array."""
+        cdef btScalar m[16]
+        cdef np.ndarray ret = np.empty(16)
         self.wrapped.getOpenGLSubMatrix(m)
         for i in range(12):
             ret[i] = m[i]
+        ret[12:16] = (0, 0, 0, 1)
         return ret
+
+    def setFromOpenGLSubMatrix(self, m):
+        """
+        Set from a numpy array containing an OpenGL transformation matrix.
+        """
+        cdef btScalar tmp[16]
+        m = m.flatten()
+        if m.shape != (16,):
+            raise ValueError("input array must have 16 elements")
+        for i in range(16):
+            tmp[i] = m[i]
+        self.wrapped.setFromOpenGLSubMatrix(tmp)
+
+    property openGLSubMatrix:
+        def __get__(self):
+            return self.getOpenGLSubMatrix()
+        def __set__(self, value):
+            self.setFromOpenGLSubMatrix(value)
 
     def getRotation(self):
         """Get the matrix represented as a :class:`Quaternion`."""
         cdef Quaternion q = Quaternion()
         self.wrapped.getRotation(q.wrapped[0])
         return q
+
+    def setRotation(self, Quaternion q):
+        """Set the matrix from a quaternion."""
+        self.wrapped.setRotation(q.wrapped[0])
+
+    property rotation:
+        def __get__(self):
+            return self.getRotation()
+        def __set__(self, value):
+            self.setRotation(value)
 
     def getEulerYPR(self):
         """
@@ -95,6 +110,12 @@ cdef class Matrix3x3:
         """
         self.wrapped.setEulerYPR(yaw, pitch, roll)
 
+    property eulerYPR:
+        def __get__(self):
+            return self.getEulerYPR()
+        def __set__(self, value):
+            self.setEulerYPR(value)
+
     def getEulerZYX(self):
         """
         Get the matrix represented as euler angles around ZYX.
@@ -106,6 +127,12 @@ cdef class Matrix3x3:
     def setEulerZYX(self, btScalar eulerX, btScalar eulerY, btScalar eulerZ):
         """Set the matrix from euler angles YPR around ZYX axes."""
         self.wrapped.setEulerZYX(eulerX, eulerY, eulerZ)
+
+    property eulerZYX:
+        def __get__(self):
+            return self.getEulerZYX()
+        def __set__(self, value):
+            self.setEulerZYX(value)
 
     def scaled(self, Vector3 s):
         """Create a scaled copy of the matrix."""
@@ -159,7 +186,6 @@ cdef class Matrix3x3:
         return Matrix3x3(self)
 
     def __imul__(self, Matrix3x3 other):
-        cdef btMatrix3x3 ret
         cdef Matrix3x3 self_copy = self.copy()
         self_copy.wrapped.imul(other.wrapped[0])
         return self_copy

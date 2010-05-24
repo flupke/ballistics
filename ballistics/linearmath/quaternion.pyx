@@ -130,27 +130,23 @@ cdef class Quaternion:
             raise NotImplementedError("comparison operator not implemented, "
                     "only == and != are supported.")
 
-    # Operators (the weird __* methods are here because of a bug in Cython)
+    def __mul__(op1, op2):
+       if isinstance(op1, Quaternion):
+           return from_c_obj((<Quaternion>op1).wrapped[0] * <float>op2)
+       else:
+           return from_c_obj((<Quaternion>op2).wrapped[0] * <float>op1)
 
-    def __mul(self, btScalar other):
-        return from_c_obj(self.wrapped[0] * other)
-    def __mul__(self, btScalar other):
-        return self.__mul(other)
+    def __div__(op1, op2):
+       if isinstance(op1, Quaternion):
+           return from_c_obj((<Quaternion>op1).wrapped[0] / <float>op2)
+       else:
+           return NotImplemented
 
-    def __div(self, btScalar other):
-        return from_c_obj(self.wrapped[0] / other)
-    def __div__(self, btScalar other):
-        return self.__div(other)
+    def __add__(Quaternion op1, Quaternion op2):
+        return from_c_obj(op1.wrapped[0] + op2.wrapped[0])
 
-    def __add(self, Quaternion other):
-        return from_c_obj(self.wrapped[0] + other.wrapped[0])
-    def __add__(self, Quaternion other):
-        return self.__add(other)
-
-    def __sub(self, Quaternion other):
-        return from_c_obj(self.wrapped[0] - other.wrapped[0])
-    def __sub__(self, Quaternion other):
-        return self.__sub(other)
+    def __sub__(Quaternion op1, Quaternion op2):
+        return from_c_obj(op1.wrapped[0] - op2.wrapped[0])
 
     def __neg__(self):
         return from_c_obj(-self.wrapped[0])

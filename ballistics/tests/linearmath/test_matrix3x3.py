@@ -1,7 +1,8 @@
 from nose.tools import assert_equal, assert_almost_equal
 import math
 import numpy as np
-from ballistics.linearmath import Quaternion, Vector3, Matrix3x3, identity
+from ballistics.linearmath import Quaternion, Vector3, Matrix3x3
+from ballistics.linearmath.matrix3x3 import identity
 
 
 def test_create():
@@ -27,7 +28,8 @@ def test_get_set():
     np_mat = np.array((
             1, 4, 7, 0, 
             2, 5, 8, 0,
-            3, 6, 9, 0))
+            3, 6, 9, 0,
+            0, 0, 0, 1))
     mat2.setFromOpenGLSubMatrix(np_mat)
     assert_equal(mat, mat2)
     assert (mat.getOpenGLSubMatrix() == np_mat).all()
@@ -75,7 +77,7 @@ def test_methods():
             "tdotx": ([vec], 1),
             "tdoty": ([vec], 2),
             "tdotz": ([vec], 3),
-            "cofac": ([1, 2, 3, 4], 0),
+            "cofac": ([0, 1, 1, 1], 0),
         }
     for name, (args, expected_ret) in meths_specs.items():
         m = mat.copy()
