@@ -10,6 +10,15 @@ wrapper_modules = [
         ("ballistics.linearmath.quaternion", "BulletDynamics"),
         ("ballistics.linearmath.matrix3x3", "BulletDynamics"),
         ("ballistics.linearmath.transform", "BulletDynamics"),
+        ("ballistics.dynamics.world.discrete", "BulletDynamics"),
+        ("ballistics.dynamics.constraintsolver.base", "BulletDynamics"),
+        ("ballistics.dynamics.constraintsolver.sequential_impulse", 
+            "BulletDynamics"),
+        ("ballistics.collision.broadphase.dbvt", "BulletCollision"),
+        ("ballistics.collision.broadphase.dispatcher", "BulletCollision"),
+        ("ballistics.collision.broadphase.interface", "BulletCollision"),
+        ("ballistics.collision.dispatch.config", "BulletCollision"),
+        ("ballistics.collision.dispatch.dispatcher", "BulletDynamics"),
     ]
 
 ext_modules = []

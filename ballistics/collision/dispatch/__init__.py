@@ -1,0 +1,2 @@
+from ballistics.collision.dispatch.config import DefaultCollisionConfiguration
+from ballistics.collision.dispatch.dispatcher import CollisionDispatcher
