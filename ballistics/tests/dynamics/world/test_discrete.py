@@ -1,3 +1,4 @@
+from nose.tools import assert_almost_equal
 from ballistics.linearmath import Vector3, Transform, Quaternion
 from ballistics.linearmath.motion_state import DefaultMotionState
 from ballistics.collision.broadphase import DbvtBroadphase
@@ -11,7 +12,7 @@ from ballistics.dynamics.rigid_body import RigidBody, RigidBodyConstructionInfo
 
 def test_hello_world():
     """
-    Reproduce the hello world example from the tutorial.
+    Port of the hello world example from the tutorial.
     """
     # Setup world
     broadphase = DbvtBroadphase()
@@ -33,15 +34,20 @@ def test_hello_world():
     world.addRigidBody(ground_rigid_body)
     # Create ball rigid body
     ball_motion_state = DefaultMotionState(
-            Transform(Quaternion(0, 0, 0, 1), Vector3(0,50,0)))
+            Transform(Quaternion(0, 0, 0, 1), Vector3(0, 50, 0)))
     mass = 1
     ball_inertia = ball_shape.calculateLocalInertia(mass)
     ball_rigid_body_ci = RigidBodyConstructionInfo(mass, ball_motion_state,
             ball_shape, ball_inertia)
     ball_rigid_body = RigidBody(ball_rigid_body_ci)
     world.addRigidBody(ball_rigid_body)
-    # Simulate 300 frames, printing ball height    
+    # Simulate 300 frames, should be enough for the sphere to reach rest state
     for i in range(300):
         world.stepSimulation(1.0 / 60.0, 10)
-        trans = ball_rigid_body.motionState.worldTransform
-        print "sphere height:", trans.origin.y
+        #trans = ball_rigid_body.motionState.worldTransform
+        #print trans.origin.y
+    # Verify ball position
+    trans = ball_motion_state.worldTransform
+    assert_almost_equal(trans.origin.y, 1.0, places=5)
+    trans = ball_rigid_body.motionState.worldTransform
+    assert_almost_equal(trans.origin.y, 1.0, places=5)

@@ -1,9 +1,17 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
+import os
+import sys
+try:
+    import Cython
+    # may need to work around setuptools bug by providing a fake Pyrex
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "fake_pyrex"))
+except ImportError:
+    pass
 
+from Cython.Distutils import build_ext
+from setuptools import setup, find_packages
+from distutils.extension import Extension
 
 wrapper_modules = [
         # linearmath
@@ -58,7 +66,7 @@ setup(
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
     ],
 
-    packages = ["potrace", "potrace.agg"],
+    packages = find_packages(exclude="build"),
     ext_modules = ext_modules,
     
     cmdclass = {"build_ext": build_ext},
