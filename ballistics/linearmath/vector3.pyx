@@ -63,15 +63,15 @@ cdef class Vector3:
 
     def normalize(self):
         """Normalize this vector x^2 + y^2 + z^2 = 1."""
-        return from_c_obj(self.wrapped.normalize())
+        return wrap_vector3(self.wrapped.normalize())
 
     def normalized(self):
         """Return a normalized version of this vector."""
-        return from_c_obj(self.wrapped.normalized())
+        return wrap_vector3(self.wrapped.normalized())
 
     def rotate(self, Vector3 w_axis, btScalar angle):
         """Rotate this vector."""
-        return from_c_obj(self.wrapped.rotate(w_axis.wrapped[0], angle))
+        return wrap_vector3(self.wrapped.rotate(w_axis.wrapped[0], angle))
 
     def angle(self, Vector3 other):
         """Return the angle between this and another vector."""
@@ -79,11 +79,11 @@ cdef class Vector3:
     
     def absolute(self):
         """Return a vector will the absolute values of each element."""
-        return from_c_obj(self.wrapped[0])
+        return wrap_vector3(self.wrapped[0])
 
     def cross(self, Vector3 other):
         """Return the cross product between this and another vector."""
-        return from_c_obj(self.wrapped.cross(other.wrapped[0]))
+        return wrap_vector3(self.wrapped.cross(other.wrapped[0]))
 
     def triple(self, Vector3 v1, Vector3 v2):
         return self.wrapped.triple(v1.wrapped[0], v2.wrapped[0])
@@ -115,7 +115,7 @@ cdef class Vector3:
 
     def lerp(self, Vector3 v, btScalar t):
         """Return the linear interpolation between this and another vector."""
-        return from_c_obj(self.wrapped.lerp(v.wrapped[0], t))
+        return wrap_vector3(self.wrapped.lerp(v.wrapped[0], t))
     
     def setMax(self, Vector3 other):
         """
@@ -195,7 +195,7 @@ cdef class Vector3:
         return "Vector3(%s, %s, %s)" % (self.x, self.y, self.z)
 
 
-cdef from_c_obj(btVector3 vec):
+cdef wrap_vector3(btVector3 vec):
     """
     Construct a Vector3 instance from its C++ counterpart.
     """

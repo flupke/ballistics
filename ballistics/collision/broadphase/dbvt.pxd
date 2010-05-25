@@ -12,7 +12,8 @@ from ballistics.collision.broadphase.interface cimport BroadphaseInterface
 cdef extern from "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h":
 
     cdef cppclass btDbvtBroadphase:
-        btDbvtBroadphase(btOverlappingPairCache *paircache=?)
+        btDbvtBroadphase()
+        btDbvtBroadphase(btOverlappingPairCache *paircache)
         void collide(btDispatcher *dispatcher)
         void optimize()
         btBroadphaseProxy* createProxy(btVector3 &aabbMin, btVector3 &aabbMax,

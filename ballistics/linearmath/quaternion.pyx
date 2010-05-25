@@ -2,8 +2,7 @@
 Wrapper for the btQuaternion class.
 """
 
-from ballistics.linearmath.vector3 cimport Vector3, \
-        from_c_obj as vector3_from_c_obj
+from ballistics.linearmath.vector3 cimport Vector3, wrap_vector3
 
 
 cdef class Quaternion:
@@ -65,11 +64,11 @@ cdef class Quaternion:
 
     def normalize(self):
         """Normalize the quaternion Such that x^2 + y^2 + z^2 +w^2 = 1."""
-        return from_c_obj(self.wrapped.normalize())
+        return wrap_quaternion(self.wrapped.normalize())
 
     def normalized(self):
         """Return a normalized version of this quaternion."""
-        return from_c_obj(self.wrapped.normalized())
+        return wrap_quaternion(self.wrapped.normalized())
 
     def angle(self, Quaternion other):
         """Return the angle between this quaternion and the other."""
@@ -81,24 +80,24 @@ cdef class Quaternion:
 
     def getAxis(self):
         """Return the axis of the rotation represented by this quaternion."""
-        return vector3_from_c_obj(self.wrapped.getAxis())
+        return wrap_vector3(self.wrapped.getAxis())
     
     def inverse(self):
         """Return the inverse of this quaternion."""
-        return from_c_obj(self.wrapped.inverse())
+        return wrap_quaternion(self.wrapped.inverse())
 
     def farthest(self, Quaternion qd):
-        return from_c_obj(self.wrapped.farthest(qd.wrapped[0]))
+        return wrap_quaternion(self.wrapped.farthest(qd.wrapped[0]))
 
     def nearest(self, Quaternion qd):
-        return from_c_obj(self.wrapped.nearest(qd.wrapped[0]))
+        return wrap_quaternion(self.wrapped.nearest(qd.wrapped[0]))
     
     def slerp(self, Quaternion q, btScalar t):
         """
         Return the quaternion which is the result of Spherical Linear
         Interpolation between this and the other quaternion.
         """
-        return from_c_obj(self.wrapped.slerp(q.wrapped[0], t))
+        return wrap_quaternion(self.wrapped.slerp(q.wrapped[0], t))
 
     def setRotation(self, Vector3 axis, btScalar angle):
         """Set the rotation using axis angle notation."""
@@ -132,27 +131,27 @@ cdef class Quaternion:
 
     def __mul__(op1, op2):
        if isinstance(op1, Quaternion):
-           return from_c_obj((<Quaternion>op1).wrapped[0] * <float>op2)
+           return wrap_quaternion((<Quaternion>op1).wrapped[0] * <float>op2)
        else:
-           return from_c_obj((<Quaternion>op2).wrapped[0] * <float>op1)
+           return wrap_quaternion((<Quaternion>op2).wrapped[0] * <float>op1)
 
     def __div__(op1, op2):
        if isinstance(op1, Quaternion):
-           return from_c_obj((<Quaternion>op1).wrapped[0] / <float>op2)
+           return wrap_quaternion((<Quaternion>op1).wrapped[0] / <float>op2)
        else:
            return NotImplemented
 
     def __add__(Quaternion op1, Quaternion op2):
-        return from_c_obj(op1.wrapped[0] + op2.wrapped[0])
+        return wrap_quaternion(op1.wrapped[0] + op2.wrapped[0])
 
     def __sub__(Quaternion op1, Quaternion op2):
-        return from_c_obj(op1.wrapped[0] - op2.wrapped[0])
+        return wrap_quaternion(op1.wrapped[0] - op2.wrapped[0])
 
     def __neg__(self):
-        return from_c_obj(-self.wrapped[0])
+        return wrap_quaternion(-self.wrapped[0])
 
 
-cdef from_c_obj(btQuaternion quat):
+cdef wrap_quaternion(btQuaternion quat):
     """
     Construct a Quaternion instance from its C++ counterpart.
     """

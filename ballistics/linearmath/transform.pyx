@@ -1,11 +1,8 @@
 cimport numpy as np
 import numpy as np
-from ballistics.linearmath.vector3 cimport Vector3, \
-        from_c_obj as vector3_from_c_obj
-from ballistics.linearmath.quaternion cimport Quaternion, \
-        from_c_obj as quaternion_from_c_obj
-from ballistics.linearmath.matrix3x3 cimport Matrix3x3, \
-        from_c_obj as matrix3x3_from_c_obj
+from ballistics.linearmath.vector3 cimport Vector3, wrap_vector3
+from ballistics.linearmath.quaternion cimport Quaternion, wrap_quaternion
+from ballistics.linearmath.matrix3x3 cimport Matrix3x3, wrap_matrix3x3
 
 
 cdef class Transform:
@@ -72,7 +69,7 @@ cdef class Transform:
 
     def getOrigin(self):
         """Return the origin vector translation."""
-        return vector3_from_c_obj(self.wrapped.getOrigin())
+        return wrap_vector3(self.wrapped.getOrigin())
 
     def setOrigin(self, Vector3 origin):
         """Set the translational element."""
@@ -86,7 +83,7 @@ cdef class Transform:
 
     def getBasis(self):
         """Return the basis matrix for the rotation."""
-        return matrix3x3_from_c_obj(self.wrapped.getBasis())
+        return wrap_matrix3x3(self.wrapped.getBasis())
 
     def setBasis(self, Matrix3x3 basis):
         """Set the rotational element by Matrix3x3."""
@@ -100,7 +97,7 @@ cdef class Transform:
 
     def getRotation(self):
         """Return a quaternion representing the rotation."""
-        return quaternion_from_c_obj(self.wrapped.getRotation())
+        return wrap_quaternion(self.wrapped.getRotation())
 
     def setRotation(self, Quaternion q):
         """Set the rotational element by Quaternion."""
@@ -125,33 +122,33 @@ cdef class Transform:
 
     def inverse(self):
         """Return the inverse of this transform."""
-        return from_c_obj(self.wrapped.inverse())
+        return wrap_transform(self.wrapped.inverse())
 
     def inverseTimes(self, Transform t):
         """Return the inverse of this transform times the other transform."""
-        return from_c_obj(self.wrapped.inverseTimes(t.wrapped[0]))
+        return wrap_transform(self.wrapped.inverseTimes(t.wrapped[0]))
 
     def invXform(self, Vector3 inVec):
-        return vector3_from_c_obj(self.wrapped.invXform(inVec.wrapped[0]))
+        return wrap_vector3(self.wrapped.invXform(inVec.wrapped[0]))
 
     def copy(self):
         """Return a copy of this Transform object."""
         return Transform(self.basis, self.origin)
 
     def __call__(self, Vector3 x):
-        return vector3_from_c_obj(self.wrapped[0](x.wrapped[0]))
+        return wrap_vector3(self.wrapped[0](x.wrapped[0]))
 
     def __mul__(op1, op2):
         if not isinstance(op1, Transform):
             return NotImplemented
         if isinstance(op2, Vector3):
-            return vector3_from_c_obj(
+            return wrap_vector3(
                     (<Transform>op1).wrapped[0] * (<Vector3>op2).wrapped[0])
         if isinstance(op2, Quaternion):
-            return quaternion_from_c_obj(
+            return wrap_quaternion(
                     (<Transform>op1).wrapped[0] * (<Quaternion>op2).wrapped[0])
         if isinstance(op2, Transform):
-            return from_c_obj(
+            return wrap_transform(
                     (<Transform>op1).wrapped[0] * (<Transform>op2).wrapped[0])
         return NotImplemented
 
@@ -180,13 +177,13 @@ cdef class Transform:
 
 def identity():
     """Return an identity transform."""
-    return from_c_obj(btTransform_getIdentity())
+    return wrap_transform(btTransform_getIdentity())
 
 
-cdef from_c_obj(btTransform trans):
+cdef public wrap_transform(btTransform trans):
     """
     Construct a Transform instance from its C++ counterpart.
     """
-    return Transform(matrix3x3_from_c_obj(trans.getBasis()),
-            vector3_from_c_obj(trans.getOrigin()))
+    return Transform(wrap_matrix3x3(trans.getBasis()), 
+            wrap_vector3(trans.getOrigin()))
 

@@ -43,4 +43,4 @@ cdef class Quaternion:
     cdef btQuaternion *wrapped
 
 
-cdef from_c_obj(btQuaternion quat)
+cdef wrap_quaternion(btQuaternion quat)

@@ -1,6 +1,5 @@
 from ballistics.collision.broadphase.dispatcher cimport btDispatcher, Dispatcher
-from ballistics.collision.dispatch.config cimport btCollisionConfiguration, \
-        CollisionConfiguration
+from ballistics.collision.dispatch.config cimport btCollisionConfiguration
 
 
 cdef extern from "BulletCollision/CollisionDispatch/btCollisionDispatcher.h":
@@ -10,4 +9,5 @@ cdef extern from "BulletCollision/CollisionDispatch/btCollisionDispatcher.h":
 
 
 cdef class CollisionDispatcher(Dispatcher):
-    pass
+
+    cdef object config

@@ -1,6 +1,5 @@
 from ballistics.linearmath.quaternion cimport Quaternion
-from ballistics.linearmath.vector3 cimport Vector3, \
-        from_c_obj as vector3_from_c_obj
+from ballistics.linearmath.vector3 cimport Vector3, wrap_vector3
 cimport numpy as np
 import numpy as np
 
@@ -32,11 +31,11 @@ cdef class Matrix3x3:
 
     def getColumn(self, int i):
         """Get a column of the matrix as a vector."""
-        return vector3_from_c_obj(self.wrapped.getColumn(i))
+        return wrap_vector3(self.wrapped.getColumn(i))
 
     def getRow(self, int i):
         """Get a row of the matrix as a vector."""
-        return vector3_from_c_obj(self.wrapped.getRow(i))
+        return wrap_vector3(self.wrapped.getRow(i))
 
     def __getitem__(self, int i):
         """Get a row of the matrix as a vector."""
@@ -136,7 +135,7 @@ cdef class Matrix3x3:
 
     def scaled(self, Vector3 s):
         """Create a scaled copy of the matrix."""
-        return from_c_obj(self.wrapped.scaled(s.wrapped[0]))
+        return wrap_matrix3x3(self.wrapped.scaled(s.wrapped[0]))
 
     def determinant(self):
         """Return the determinant of the matrix."""
@@ -144,25 +143,25 @@ cdef class Matrix3x3:
 
     def adjoint(self):
         """Return the adjoint of the matrix."""
-        return from_c_obj(self.wrapped.adjoint())
+        return wrap_matrix3x3(self.wrapped.adjoint())
 
     def absolute(self):
         """Return the matrix with all values non negative."""
-        return from_c_obj(self.wrapped.absolute())
+        return wrap_matrix3x3(self.wrapped.absolute())
 
     def transpose(self):
         """Return the transpose of the matrix."""
-        return from_c_obj(self.wrapped.transpose())
+        return wrap_matrix3x3(self.wrapped.transpose())
 
     def inverse(self):
         """Return the inverse of the matrix."""
-        return from_c_obj(self.wrapped.inverse())
+        return wrap_matrix3x3(self.wrapped.inverse())
 
     def transposeTimes(self, Matrix3x3 m):
-        return from_c_obj(self.wrapped.transposeTimes(m.wrapped[0]))
+        return wrap_matrix3x3(self.wrapped.transposeTimes(m.wrapped[0]))
 
     def timesTranspose(self, Matrix3x3 m):
-        return from_c_obj(self.wrapped.timesTranspose(m.wrapped[0]))
+        return wrap_matrix3x3(self.wrapped.timesTranspose(m.wrapped[0]))
 
     def tdotx(self, Vector3 v):
         return self.wrapped.tdotx(v.wrapped[0])
@@ -221,10 +220,10 @@ def identity():
     """
     Return the identity matrix.
     """
-    return from_c_obj(btMatrix3x3_getIdentity())
+    return wrap_matrix3x3(btMatrix3x3_getIdentity())
 
 
-cdef from_c_obj(btMatrix3x3 mat):
+cdef wrap_matrix3x3(btMatrix3x3 mat):
     """
     Construct a Matrix3x3 instance from its C++ counterpart.
     """

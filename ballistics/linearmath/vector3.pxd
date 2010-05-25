@@ -49,4 +49,4 @@ cdef class Vector3:
     cdef btVector3 *wrapped
 
 
-cdef from_c_obj(btVector3 vec)
+cdef wrap_vector3(btVector3 vec)

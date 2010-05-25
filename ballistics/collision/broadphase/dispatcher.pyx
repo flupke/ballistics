@@ -6,4 +6,5 @@ cdef class Dispatcher:
                 "Dispatcher")
 
     def __dealloc__(self):
+        print "dealloc dispatcher"
         del self.wrapped

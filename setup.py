@@ -6,19 +6,27 @@ from Cython.Distutils import build_ext
 
 
 wrapper_modules = [
+        # linearmath
         ("ballistics.linearmath.vector3", "BulletDynamics"),
         ("ballistics.linearmath.quaternion", "BulletDynamics"),
         ("ballistics.linearmath.matrix3x3", "BulletDynamics"),
         ("ballistics.linearmath.transform", "BulletDynamics"),
-        ("ballistics.dynamics.world.discrete", "BulletDynamics"),
-        ("ballistics.dynamics.constraintsolver.base", "BulletDynamics"),
-        ("ballistics.dynamics.constraintsolver.sequential_impulse", 
-            "BulletDynamics"),
+        ("ballistics.linearmath.motion_state", "BulletDynamics"),
+        # collision
         ("ballistics.collision.broadphase.dbvt", "BulletCollision"),
         ("ballistics.collision.broadphase.dispatcher", "BulletCollision"),
         ("ballistics.collision.broadphase.interface", "BulletCollision"),
         ("ballistics.collision.dispatch.config", "BulletCollision"),
-        ("ballistics.collision.dispatch.dispatcher", "BulletDynamics"),
+        ("ballistics.collision.dispatch.dispatcher", "BulletCollision"),
+        ("ballistics.collision.shapes.base", "BulletCollision"),
+        ("ballistics.collision.shapes.static_plane", "BulletCollision"),
+        ("ballistics.collision.shapes.sphere", "BulletCollision"),
+        # dynamics
+        ("ballistics.dynamics.rigid_body", "BulletDynamics"),
+        ("ballistics.dynamics.world.discrete", "BulletDynamics"),
+        ("ballistics.dynamics.constraintsolver.base", "BulletDynamics"),
+        ("ballistics.dynamics.constraintsolver.sequential_impulse", 
+            "BulletDynamics"),
     ]
 
 ext_modules = []

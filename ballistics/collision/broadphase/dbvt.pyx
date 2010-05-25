@@ -5,4 +5,3 @@ cdef class DbvtBroadphase:
 
     def __init__(self):
         self.wrapped = <btBroadphaseInterface*>(new btDbvtBroadphase())
-

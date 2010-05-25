@@ -49,4 +49,4 @@ cdef class Matrix3x3:
     cdef btMatrix3x3 *wrapped
 
 
-cdef from_c_obj(btMatrix3x3 mat)
+cdef wrap_matrix3x3(btMatrix3x3 mat)

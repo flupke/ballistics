@@ -38,3 +38,6 @@ cdef extern from "LinearMath/btTransform.h":
 cdef class Transform:
 
     cdef btTransform *wrapped
+
+
+cdef public wrap_transform(btTransform trans)

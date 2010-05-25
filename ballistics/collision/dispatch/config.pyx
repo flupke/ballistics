@@ -8,14 +8,12 @@ cdef class CollisionConfiguration:
                 "CollisionConfiguration")
 
     def __dealloc__(self):
+        print "dealloc collision config"
         del self.wrapped
 
 
 cdef class DefaultCollisionConfiguration(CollisionConfiguration):
     
-    def __cinit__(self):
+    def __init__(self):
         self.wrapped = <btCollisionConfiguration*>(
                 new btDefaultCollisionConfiguration())
-
-    def __init__(self):
-        pass

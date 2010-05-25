@@ -5,4 +5,5 @@ cdef class ConstraintSolver:
                 "ConstraintSolver")
 
     def __dealloc__(self):
+        print "dealloc constraint solver"
         del self.wrapped
