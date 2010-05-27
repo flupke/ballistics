@@ -29,4 +29,8 @@ cdef class DefaultMotionState(MotionState):
     pass
 
 
+cdef class BallisticsMotionState(MotionState):
+    pass
+
+
 cdef wrap_default_motion_state(btDefaultMotionState *state)

@@ -8,6 +8,7 @@ from ballistics.collision.shapes import StaticPlaneShape, SphereShape
 from ballistics.dynamics.world import DiscreteDynamicsWorld
 from ballistics.dynamics.constraintsolver import SequentialImpulseConstraintSolver
 from ballistics.dynamics.rigid_body import RigidBody, RigidBodyConstructionInfo
+from ballistics import shortcuts
 
 
 def test_hello_world():
@@ -51,3 +52,22 @@ def test_hello_world():
     assert_almost_equal(trans.origin.y, 1.0, places=5)
     trans = ball_rigid_body.motionState.worldTransform
     assert_almost_equal(trans.origin.y, 1.0, places=5)
+
+
+def test_shortcuts_hello_world():
+    """
+    Same as test_hello_world(), using Python shortcuts.
+    """
+    # Setup world
+    world = shortcuts.discrete_world((0, -9.8, 0))
+    # Create rigid bodies
+    ball_rigid_body = shortcuts.rigid_sphere((0, 50, 0), 1, mass=1)
+    world.addRigidBody(ball_rigid_body)
+    ground_rigid_body = shortcuts.static_plane((0, 1, 0), 0)
+    world.addRigidBody(ground_rigid_body)
+    # Simulate 300 frames, should be enough for the sphere to reach rest state
+    for i in range(300):
+        world.stepSimulation(1.0 / 60.0, 10)
+    # Verify ball position
+    trans = ball_rigid_body.motionState.worldTransform
+    assert_almost_equal(trans.origin.y, 1.0, places=5)  

@@ -29,6 +29,7 @@ wrapper_modules = [
         ("ballistics.collision.shapes.base", "BulletCollision"),
         ("ballistics.collision.shapes.static_plane", "BulletCollision"),
         ("ballistics.collision.shapes.sphere", "BulletCollision"),
+        ("ballistics.collision.shapes.box", "BulletCollision"),
         # dynamics
         ("ballistics.dynamics.rigid_body", "BulletDynamics"),
         ("ballistics.dynamics.world.discrete", "BulletDynamics"),
@@ -66,7 +67,7 @@ setup(
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
     ],
 
-    packages = find_packages(exclude="build"),
+    packages = find_packages(exclude=["build", "fake_pyrex"]),
     ext_modules = ext_modules,
     
     cmdclass = {"build_ext": build_ext},

@@ -47,6 +47,7 @@ cdef class DefaultMotionState(MotionState):
 
 
 cdef class BallisticsMotionState(MotionState):
+
     pass
 
 
