@@ -17,6 +17,7 @@ cdef class DiscreteDynamicsWorld:
         self.pairCache = pairCache
         self.constraintSolver = constraintSolver
         self.collisionConfiguration = collisionConfiguration
+        self.rigidBodies = set()
         self.wrapped = new btDiscreteDynamicsWorld(dispatcher.wrapped,
                 pairCache.wrapped, constraintSolver.wrapped,
                 collisionConfiguration.wrapped)
@@ -33,9 +34,11 @@ cdef class DiscreteDynamicsWorld:
             self.wrapped.addRigidBody(body.wrapped, group, mask)
         else:
             self.wrapped.addRigidBody(body.wrapped)
+        self.rigidBodies.add(body)
 
     def removeRigidBody(self, RigidBody body):
         self.wrapped.removeRigidBody(body.wrapped)
+        self.rigidBodies.remove(body)
 
     def stepSimulation(self, btScalar timeStep, maxSubSteps=None, 
             fixedTimeStep=None):

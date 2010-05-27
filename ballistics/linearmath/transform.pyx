@@ -5,7 +5,7 @@ from ballistics.linearmath.quaternion cimport Quaternion, wrap_quaternion
 from ballistics.linearmath.matrix3x3 cimport Matrix3x3, wrap_matrix3x3
 
 
-cdef class Transform:
+cdef public api class Transform[type BstxTransformType, object BstxTransform]:
 
     def __init__(self, *args):
         nargs = len(args)
@@ -180,7 +180,7 @@ def identity():
     return wrap_transform(btTransform_getIdentity())
 
 
-cdef public wrap_transform(btTransform trans):
+cdef api wrap_transform(btTransform trans):
     """
     Construct a Transform instance from its C++ counterpart.
     """

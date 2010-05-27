@@ -1,4 +1,5 @@
 from ballistics.linearmath.transform cimport btTransform
+from cpython.ref cimport PyObject
 
 
 cdef extern from "LinearMath/btMotionState.h":
@@ -18,6 +19,17 @@ cdef extern from "LinearMath/btDefaultMotionState.h":
         btDefaultMotionState()
         btDefaultMotionState(btTransform&)
         btDefaultMotionState(btTransform&, btTransform&)
+
+
+cdef extern from "bstx_motion_state.h":
+
+    cdef cppclass BstxMotionState:
+        BstxMotionState(btTransform &initialTrans, object instance)
+        void getWorldTransform(btTransform &worldTrans)
+        void setWorldTransform(btTransform &worldTrans)
+        void setKinematicTransform(btTransform &kineTrans)
+
+    void BstxMotionState_init "BstxMotionState::init"()
 
 
 cdef class MotionState:

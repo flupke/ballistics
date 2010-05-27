@@ -15,36 +15,38 @@ from distutils.extension import Extension
 
 wrapper_modules = [
         # linearmath
-        ("ballistics.linearmath.vector3", "BulletDynamics"),
-        ("ballistics.linearmath.quaternion", "BulletDynamics"),
-        ("ballistics.linearmath.matrix3x3", "BulletDynamics"),
-        ("ballistics.linearmath.transform", "BulletDynamics"),
-        ("ballistics.linearmath.motion_state", "BulletDynamics"),
+        ("ballistics.linearmath.vector3", ["BulletDynamics"]),
+        ("ballistics.linearmath.quaternion", ["BulletDynamics"]),
+        ("ballistics.linearmath.matrix3x3", ["BulletDynamics"]),
+        ("ballistics.linearmath.transform", ["BulletDynamics"]),
+        ("ballistics.linearmath.motion_state", ["BulletDynamics"], 
+            ["ballistics/linearmath/bstx_motion_state.cpp"]),
         # collision
-        ("ballistics.collision.broadphase.dbvt", "BulletCollision"),
-        ("ballistics.collision.broadphase.dispatcher", "BulletCollision"),
-        ("ballistics.collision.broadphase.interface", "BulletCollision"),
-        ("ballistics.collision.dispatch.config", "BulletCollision"),
-        ("ballistics.collision.dispatch.dispatcher", "BulletCollision"),
-        ("ballistics.collision.shapes.base", "BulletCollision"),
-        ("ballistics.collision.shapes.static_plane", "BulletCollision"),
-        ("ballistics.collision.shapes.sphere", "BulletCollision"),
-        ("ballistics.collision.shapes.box", "BulletCollision"),
+        ("ballistics.collision.broadphase.dbvt", ["BulletCollision"]),
+        ("ballistics.collision.broadphase.dispatcher", ["BulletCollision"]),
+        ("ballistics.collision.broadphase.interface", ["BulletCollision"]),
+        ("ballistics.collision.dispatch.config", ["BulletCollision"]),
+        ("ballistics.collision.dispatch.dispatcher", ["BulletCollision"]),
+        ("ballistics.collision.shapes.base", ["BulletCollision"]),
+        ("ballistics.collision.shapes.static_plane", ["BulletCollision"]),
+        ("ballistics.collision.shapes.sphere", ["BulletCollision"]),
+        ("ballistics.collision.shapes.box", ["BulletCollision"]),
         # dynamics
-        ("ballistics.dynamics.rigid_body", "BulletDynamics"),
-        ("ballistics.dynamics.world.discrete", "BulletDynamics"),
-        ("ballistics.dynamics.constraintsolver.base", "BulletDynamics"),
+        ("ballistics.dynamics.rigid_body", ["BulletDynamics"]),
+        ("ballistics.dynamics.world.discrete", ["BulletDynamics"]),
+        ("ballistics.dynamics.constraintsolver.base", ["BulletDynamics"]),
         ("ballistics.dynamics.constraintsolver.sequential_impulse", 
-            "BulletDynamics"),
+            ["BulletDynamics"]),
     ]
 
 ext_modules = []
-for module, lib in wrapper_modules:
-    ext_modules.append(Extension(
-        module,
-        [module.replace(".", "/") + ".pyx"],
-        libraries=[lib], 
-        language="c++"))
+for mod_spec in wrapper_modules:
+    module, libs = mod_spec[:2]    
+    files = [module.replace(".", "/") + ".pyx"]
+    if len(mod_spec) == 3:
+        files += mod_spec[2]
+    ext_modules.append(Extension(module, files, libraries=libs,
+        language="c++", include_dirs=["ballistics/linearmath"]))
 
 setup(
     name = "ballistics",

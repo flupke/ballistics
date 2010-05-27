@@ -1,10 +1,11 @@
 from nose.tools import assert_almost_equal
 from ballistics.linearmath import Vector3, Transform, Quaternion
-from ballistics.linearmath.motion_state import DefaultMotionState
+from ballistics.linearmath.motion_state import DefaultMotionState, \
+        BallisticsMotionState 
 from ballistics.collision.broadphase import DbvtBroadphase
 from ballistics.collision.dispatch import DefaultCollisionConfiguration, \
         CollisionDispatcher
-from ballistics.collision.shapes import StaticPlaneShape, SphereShape
+from ballistics.collision.shapes import StaticPlaneShape, SphereShape, BoxShape
 from ballistics.dynamics.world import DiscreteDynamicsWorld
 from ballistics.dynamics.constraintsolver import SequentialImpulseConstraintSolver
 from ballistics.dynamics.rigid_body import RigidBody, RigidBodyConstructionInfo
@@ -54,10 +55,7 @@ def test_hello_world():
     assert_almost_equal(trans.origin.y, 1.0, places=5)
 
 
-def test_shortcuts_hello_world():
-    """
-    Same as test_hello_world(), using Python shortcuts.
-    """
+def default_scene():
     # Setup world
     world = shortcuts.discrete_world((0, -9.8, 0))
     # Create rigid bodies
@@ -65,9 +63,54 @@ def test_shortcuts_hello_world():
     world.addRigidBody(ball_rigid_body)
     ground_rigid_body = shortcuts.static_plane((0, 1, 0), 0)
     world.addRigidBody(ground_rigid_body)
+    return world, ball_rigid_body
+
+
+def test_shortcuts_hello_world():
+    """
+    Same as test_hello_world(), using Python shortcuts.
+    """
+    # Setup world
+    world, ball_rigid_body = default_scene()
     # Simulate 300 frames, should be enough for the sphere to reach rest state
     for i in range(300):
         world.stepSimulation(1.0 / 60.0, 10)
     # Verify ball position
     trans = ball_rigid_body.motionState.worldTransform
     assert_almost_equal(trans.origin.y, 1.0, places=5)  
+
+
+def test_all_shapes():
+    world = shortcuts.discrete_world()
+    ground = shortcuts.static_plane()
+    shapes = [
+            SphereShape(1),
+            BoxShape(Vector3(1, 1, 1)),
+        ]
+    for i, shape in enumerate(shapes):
+        motion_state = DefaultMotionState(Transform(Quaternion(0, 0, 0, 1),
+            Vector3(i * 10, 50, 0)))
+        mass = 1
+        inertia = shape.calculateLocalInertia(mass)
+        body_ci = RigidBodyConstructionInfo(mass, motion_state, shape, inertia)
+        body = RigidBody(body_ci)
+        world.addRigidBody(body)
+    for i in range(300):
+        world.stepSimulation(1.0 / 60.0, 10)
+
+
+def test_custom_motion_state():
+    """
+    Test custom Python MotionState.
+    """
+    class MyMotionState(BallisticsMotionState):
+        
+        def update_transform(self, trans):
+            self.trans = trans
+
+    world, ball = default_scene()
+    motion_state = MyMotionState()
+    ball.motionState = motion_state
+    for i in range(300):
+        world.stepSimulation(1.0 / 60.0, 10)
+    assert_almost_equal(motion_state.trans.origin.y, 1.0, places=5)

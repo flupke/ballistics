@@ -2,6 +2,9 @@ from ballistics.linearmath.transform cimport Transform, wrap_transform
 from ballistics.linearmath.transform import identity
 
 
+BstxMotionState_init()
+
+
 cdef class MotionState:
 
     def __init__(self, *args):
@@ -47,8 +50,24 @@ cdef class DefaultMotionState(MotionState):
 
 
 cdef class BallisticsMotionState(MotionState):
+    """
+    Base class for custom Python motion states.
+    """
 
-    pass
+    def __init__(self, Transform initialTrans=identity()):
+        self.wrapped = <btMotionState*>(new BstxMotionState(
+            initialTrans.wrapped[0], self))
+
+    def update_transform(self, trans):
+        """
+        This method is called by Bullet whenever this motion state object's 
+        transformation changes.
+
+        It receives a :class:`Transform` object containing the object position
+        in the simulation world.
+
+        The default implementation does nothing.
+        """
 
 
 cdef wrap_default_motion_state(btDefaultMotionState *state):

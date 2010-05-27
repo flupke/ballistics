@@ -21,7 +21,7 @@ cdef extern from "BulletDynamics/Dynamics/btRigidBody.h":
 cdef class RigidBodyConstructionInfo:
 
     cdef btRigidBodyConstructionInfo *wrapped
-    cdef object motionState
+    cdef public object motionState
     cdef object collisionShape
     cdef object localInertia
 

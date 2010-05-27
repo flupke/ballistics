@@ -35,9 +35,9 @@ cdef extern from "LinearMath/btTransform.h":
     cdef btTransform& btTransform_getIdentity "btTransform::getIdentity" ()
 
 
-cdef class Transform:
+cdef public api class Transform[type BstxTransformType, object BstxTransform]:
 
     cdef btTransform *wrapped
 
 
-cdef public wrap_transform(btTransform trans)
+cdef api wrap_transform(btTransform trans)

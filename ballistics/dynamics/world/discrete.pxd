@@ -59,3 +59,4 @@ cdef class DiscreteDynamicsWorld:
     cdef object pairCache 
     cdef object constraintSolver 
     cdef object collisionConfiguration 
+    cdef set rigidBodies
