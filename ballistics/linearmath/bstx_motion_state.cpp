@@ -7,7 +7,16 @@ BstxMotionState::BstxMotionState(btTransform &initialTrans,
         PyObject *instance):
     m_instance(instance),
     m_initialTrans(initialTrans)
-{ }    
+{ 
+    m_updateTransformMethod = PyObject_GetAttrString(instance, "update_transform");
+    m_args = PyTuple_New(1);
+}    
+
+BstxMotionState::~BstxMotionState() 
+{
+    Py_DECREF(m_updateTransformMethod);
+    Py_DECREF(m_args);
+}
 
 void BstxMotionState::getWorldTransform(btTransform &worldTrans) const
 {
@@ -17,15 +26,17 @@ void BstxMotionState::getWorldTransform(btTransform &worldTrans) const
 void BstxMotionState::setWorldTransform(const btTransform &worldTrans)
 {
     PyGILState_STATE state;
-    PyObject *trans;
-    PyObject* ret;
+    PyObject *trans, *ret;
 
     state = PyGILState_Ensure();
 
     trans = wrap_transform(worldTrans);
-    ret = PyObject_CallMethod(m_instance, "update_transform", "O", trans);
-    Py_XDECREF(trans);
+    PyTuple_SET_ITEM(m_args, 0, trans);
+    //ret = PyObject_CallFunctionObjArgs(m_updateTransformMethod, trans, NULL);
+    ret = PyObject_CallObject(m_updateTransformMethod, m_args);
+    //ret = PyObject_CallMethod(m_instance, "update_transform", "O", trans);
     Py_XDECREF(ret);
+    Py_XDECREF(trans);
     
     PyGILState_Release(state);    
 }
