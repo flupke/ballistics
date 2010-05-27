@@ -42,12 +42,13 @@ cdef class DiscreteDynamicsWorld:
 
     def stepSimulation(self, btScalar timeStep, maxSubSteps=None, 
             fixedTimeStep=None):
-        if maxSubSteps is not None:
-            if fixedTimeStep is not None:
-                self.wrapped.stepSimulation(timeStep, maxSubSteps,
-                        fixedTimeStep)
+        with nogil:
+            if maxSubSteps is not None:
+                if fixedTimeStep is not None:
+                    self.wrapped.stepSimulation(timeStep, maxSubSteps,
+                            fixedTimeStep)
+                else:
+                    self.wrapped.stepSimulation(timeStep, maxSubSteps)
             else:
-                self.wrapped.stepSimulation(timeStep, maxSubSteps)
-        else:
-            self.wrapped.stepSimulation(timeStep)
+                self.wrapped.stepSimulation(timeStep)
 

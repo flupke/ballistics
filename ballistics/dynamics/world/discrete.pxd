@@ -18,10 +18,10 @@ cdef extern from "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h":
         void addRigidBody(btRigidBody *body)
         void addRigidBody(btRigidBody *body, short group, short mask)
         void removeRigidBody(btRigidBody *body)
-        int stepSimulation(btScalar timeStep)
-        int stepSimulation(btScalar timeStep, int maxSubSteps)
+        int stepSimulation(btScalar timeStep) nogil
+        int stepSimulation(btScalar timeStep, int maxSubSteps) nogil
         int stepSimulation(btScalar timeStep, int maxSubSteps, 
-                btScalar fixedTimeStep)
+                btScalar fixedTimeStep) nogil
 
 """
         void synchronizeMotionStates()
