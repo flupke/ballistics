@@ -8,7 +8,6 @@ cdef class CollisionShape:
                 "CollisionShape")
 
     def __dealloc__(self):
-        print "dealloc collision shape"
         del self.wrapped
 
     def calculateLocalInertia(self, btScalar mass):

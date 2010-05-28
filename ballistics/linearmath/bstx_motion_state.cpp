@@ -32,9 +32,7 @@ void BstxMotionState::setWorldTransform(const btTransform &worldTrans)
 
     trans = wrap_transform(worldTrans);
     PyTuple_SET_ITEM(m_args, 0, trans);
-    //ret = PyObject_CallFunctionObjArgs(m_updateTransformMethod, trans, NULL);
     ret = PyObject_CallObject(m_updateTransformMethod, m_args);
-    //ret = PyObject_CallMethod(m_instance, "update_transform", "O", trans);
     Py_XDECREF(ret);
     Py_XDECREF(trans);
     

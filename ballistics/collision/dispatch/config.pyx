@@ -8,7 +8,6 @@ cdef class CollisionConfiguration:
                 "CollisionConfiguration")
 
     def __dealloc__(self):
-        print "dealloc collision config"
         del self.wrapped
 
 

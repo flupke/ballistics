@@ -5,6 +5,14 @@ import sys
 from ballistics import shortcuts
 from ballistics.linearmath.motion_state import BallisticsMotionState
 import time
+from cProfile import Profile, run
+from pstats import Stats
+from pyprof2calltree import visualize
+
+
+def do(num_iter):
+    for i in xrange(num_iter):
+        world.stepSimulation(1.0 / 60.0, 10)
 
 
 if len(sys.argv) > 1:
@@ -31,11 +39,18 @@ world.addRigidBody(ground)
 
 print "running %d iterations..." % num_iter
 start_time = time.time()
-for i in range(num_iter):
-    world.stepSimulation(1.0 / 60.0, 10)
 end_time = time.time()
+
+#do(num_iter)
+
+#run("do(num_iter)", "bench.prof")
+#print profiler.getstats()
+#visualize(profiler.getstats()[0])
+#time.sleep(1)
+#visualize("bench.prof")
 
 total_time = end_time - start_time
 print "total time: %s" % total_time
 print "it/s: %s" % (num_iter / total_time)
 print "it/frame: %s" % (num_iter / total_time / 60.0)
+

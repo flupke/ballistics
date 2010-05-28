@@ -7,5 +7,4 @@ cdef class BroadphaseInterface:
                 "BroadphaseInterface")
 
     def __dealloc__(self):
-        print "dealloc broadphase interface"
         del self.wrapped

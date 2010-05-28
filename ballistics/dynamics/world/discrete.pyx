@@ -23,7 +23,6 @@ cdef class DiscreteDynamicsWorld:
                 collisionConfiguration.wrapped)
 
     def __dealloc__(self):
-        print "dealloc world"
         del self.wrapped
 
     def setGravity(self, Vector3 vec):

@@ -20,7 +20,6 @@ cdef class RigidBodyConstructionInfo:
                     localInertia.wrapped[0])
 
     def __dealloc__(self):
-        print "dealloc rigid body CI"
         del self.wrapped
 
 
@@ -31,7 +30,6 @@ cdef class RigidBody:
         self.wrapped = new btRigidBody(ci.wrapped[0])
 
     def __dealloc__(self):
-        print "dealloc rigid body"
         del self.wrapped
 
     def getMotionState(self):
