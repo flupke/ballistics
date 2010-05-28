@@ -33,10 +33,10 @@ cdef class RigidBody:
         del self.wrapped
 
     def getMotionState(self):
-        return wrap_default_motion_state(
-                <btDefaultMotionState*>self.wrapped.getMotionState())
+        return self.constructionInfo.motionState
 
     def setMotionState(self, MotionState motionState):
+        self.constructionInfo.motionState = motionState
         self.wrapped.setMotionState(motionState.wrapped)
 
     property motionState:

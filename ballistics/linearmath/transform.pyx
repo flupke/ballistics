@@ -43,7 +43,7 @@ cdef public api class Transform[type BstxTransformType, object BstxTransform]:
     def getOpenGLMatrix(self):
         """Return the matrix as a 16 elements flat numpy array."""
         cdef btScalar m[16]
-        cdef np.ndarray ret = np.empty(16)
+        cdef np.ndarray ret = np.empty(16, dtype=np.float32)
         self.wrapped.getOpenGLMatrix(m)
         for i in range(16):
             ret[i] = m[i]

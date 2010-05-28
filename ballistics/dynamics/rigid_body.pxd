@@ -1,6 +1,6 @@
 from ballistics.linearmath.common cimport btScalar
 from ballistics.linearmath.vector3 cimport btVector3
-from ballistics.linearmath.motion_state cimport btMotionState
+from ballistics.linearmath.motion_state cimport btMotionState, MotionState
 from ballistics.collision.shapes.base cimport btCollisionShape
 
 
@@ -21,7 +21,7 @@ cdef extern from "BulletDynamics/Dynamics/btRigidBody.h":
 cdef class RigidBodyConstructionInfo:
 
     cdef btRigidBodyConstructionInfo *wrapped
-    cdef public object motionState
+    cdef public MotionState motionState
     cdef object collisionShape
     cdef object localInertia
 
