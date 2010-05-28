@@ -3,13 +3,14 @@
 import os
 import sys
 try:
-    import Cython
+    from Cython.Distutils import build_ext
     # may need to work around setuptools bug by providing a fake Pyrex
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "fake_pyrex"))
+    ext_ext = ".pyx"
 except ImportError:
-    pass
+    from setuptools.command.build_ext import build_ext
+    ext_ext = ".cpp"
 
-from Cython.Distutils import build_ext
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 
@@ -42,7 +43,7 @@ wrapper_modules = [
 ext_modules = []
 for mod_spec in wrapper_modules:
     module, libs = mod_spec[:2]    
-    files = [module.replace(".", "/") + ".pyx"]
+    files = [module.replace(".", "/") + ext_ext] 
     if len(mod_spec) == 3:
         files += mod_spec[2]
     ext_modules.append(Extension(module, files, libraries=libs,
