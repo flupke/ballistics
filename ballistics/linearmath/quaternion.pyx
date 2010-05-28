@@ -147,8 +147,11 @@ cdef class Quaternion:
     def __sub__(Quaternion op1, Quaternion op2):
         return wrap_quaternion(op1.wrapped[0] - op2.wrapped[0])
 
+    # Produces an error on older GCCs, disabled
+    """
     def __neg__(self):
         return wrap_quaternion(-self.wrapped[0])
+    """
 
 
 cdef wrap_quaternion(btQuaternion quat):

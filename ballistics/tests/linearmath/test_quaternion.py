@@ -72,5 +72,4 @@ def test_methods():
     assert_raises(TypeError, lambda: 10 / base)
     assert_equal(base + other, Quaternion(0, 2, 2, 2))
     assert_equal(base - other, Quaternion(0, -2, 2, 0))
-    assert_equal(-base, Quaternion(0, 0, -2, -1))
     
