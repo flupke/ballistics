@@ -16,6 +16,9 @@ cdef extern from "BulletDynamics/Dynamics/btRigidBody.h":
         btRigidBody(btRigidBodyConstructionInfo& constructionInfo)
         btMotionState* getMotionState()
         void setMotionState(btMotionState* motionState)
+        void setDamping(btScalar lin_damping, btScalar ang_damping)
+        btScalar getLinearDamping() 
+        btScalar getAngularDamping()
 
 
 cdef class RigidBodyConstructionInfo:

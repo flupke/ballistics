@@ -44,3 +44,30 @@ cdef class RigidBody:
             return self.getMotionState()
         def __set__(self, value):
             self.setMotionState(value)
+
+    def setDamping(self, float lin_damping, float ang_damping):
+        self.wrapped.setDamping(lin_damping, ang_damping)
+
+    def setLinearDamping(self, float lin_damping):
+        self.wrapped.setDamping(lin_damping, self.wrapped.getAngularDamping())
+
+    def setAngularDamping(self, float ang_damping):
+        self.wrapped.setDamping(self.wrapped.getLinearDamping(), ang_damping)
+
+    def getLinearDamping(self):
+        return self.wrapped.getLinearDamping()
+
+    def getAngularDamping(self):
+        return self.wrapped.getAngularDamping()
+
+    property linearDamping:
+        def __get__(self):
+            return self.getLinearDamping()
+        def __set__(self, value):
+            self.setLinearDamping(value)
+
+    property angularDamping:
+        def __get__(self):
+            return self.getAngularDamping()
+        def __set__(self, value):
+            self.setAngularDamping(value)
