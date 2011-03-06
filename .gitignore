@@ -1,4 +1,10 @@
 *.swp
 *.pyc
+*.pyo
 *.so
-build
+/build
+/dist
+/target
+/.coverage
+/ballistics.egg-info
+/nosetests.xml
