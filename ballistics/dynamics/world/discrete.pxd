@@ -5,6 +5,8 @@ from ballistics.collision.broadphase.interface cimport btBroadphaseInterface
 from ballistics.collision.dispatch.config cimport btCollisionConfiguration
 from ballistics.dynamics.constraintsolver.base cimport btConstraintSolver
 from ballistics.dynamics.rigid_body cimport btRigidBody
+from ballistics.dynamics.constraintsolver.typed_constraint cimport \
+        btTypedConstraint
 
 
 cdef extern from "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h":
@@ -22,13 +24,13 @@ cdef extern from "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h":
         int stepSimulation(btScalar timeStep, int maxSubSteps) nogil
         int stepSimulation(btScalar timeStep, int maxSubSteps, 
                 btScalar fixedTimeStep) nogil
+        void addConstraint(btTypedConstraint *raint, 
+                int disableCollisionsBetweenLinkedBodies)
+        void removeConstraint(btTypedConstraint *raint)
 
 """
         void synchronizeMotionStates()
         void synchronizeSingleMotionState(btRigidBody *body)
-        void addConstraint(btTypedConstraint *raint, 
-                bool disableCollisionsBetweenLinkedBodies=?)
-        void removeConstraint(btTypedConstraint *raint)
         void addAction(btActionInterface*)
         void removeAction(btActionInterface*)
         btSimulationIslandManager* getSimulationIslandManager()

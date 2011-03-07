@@ -3,6 +3,7 @@ from ballistics.collision.broadphase.dispatcher cimport Dispatcher
 from ballistics.collision.broadphase.interface cimport BroadphaseInterface
 from ballistics.collision.dispatch.config cimport CollisionConfiguration
 from ballistics.dynamics.constraintsolver.base cimport ConstraintSolver
+from ballistics.dynamics.constraintsolver.typed_constraint cimport TypedConstraint
 from ballistics.dynamics.rigid_body cimport RigidBody
 from cpython.ref cimport Py_DECREF, Py_INCREF
 
@@ -51,3 +52,10 @@ cdef class DiscreteDynamicsWorld:
             else:
                 self.wrapped.stepSimulation(timeStep)
 
+    def addConstraint(self, TypedConstraint raint, 
+            disableCollisionsBetweenLinkedBodies=True):
+        self.wrapped.addConstraint(raint.wrapped, 
+                disableCollisionsBetweenLinkedBodies)
+
+    def removeConstraint(self, TypedConstraint raint):
+        self.wrapped.removeConstraint(raint.wrapped)

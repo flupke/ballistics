@@ -39,6 +39,8 @@ wrapper_modules = [
         ("ballistics.dynamics.constraintsolver.base", ["BulletDynamics"]),
         ("ballistics.dynamics.constraintsolver.sequential_impulse", 
             ["BulletDynamics"]),
+        ("ballistics.dynamics.constraintsolver.typed_constraint",
+            ["BulletDynamics"]),
     ]
 
 ext_modules = []

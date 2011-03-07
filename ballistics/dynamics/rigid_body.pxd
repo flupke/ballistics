@@ -19,6 +19,10 @@ cdef extern from "BulletDynamics/Dynamics/btRigidBody.h":
         void setDamping(btScalar lin_damping, btScalar ang_damping)
         btScalar getLinearDamping() 
         btScalar getAngularDamping()
+        void applyCentralForce(btVector3 &force)
+        void applyForce(btVector3 &force, btVector3 &rel_pos)
+        void applyCentralImpulse(btVector3 &impulse)
+        void applyImpulse(btVector3 &force, btVector3 &rel_pos)
 
 
 cdef class RigidBodyConstructionInfo:

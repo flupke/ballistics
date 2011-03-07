@@ -71,3 +71,15 @@ cdef class RigidBody:
             return self.getAngularDamping()
         def __set__(self, value):
             self.setAngularDamping(value)
+
+    def applyCentralForce(self, Vector3 force):
+        self.wrapped.applyCentralForce(force.wrapped[0])
+
+    def applyForce(self, Vector3 force, Vector3 rel_pos):
+        self.wrapped.applyForce(force.wrapped[0], rel_pos.wrapped[0])
+
+    def applyCentralImpulse(self, Vector3 impulse):
+        self.wrapped.applyCentralImpulse(impulse.wrapped[0])
+
+    def applyImpulse(self, Vector3 force, Vector3 rel_pos):
+        self.wrapped.applyImpulse(force.wrapped[0], rel_pos.wrapped[0])
