@@ -5,6 +5,7 @@ from ballistics.collision.dispatch.config cimport CollisionConfiguration
 from ballistics.dynamics.constraintsolver.base cimport ConstraintSolver
 from ballistics.dynamics.constraintsolver.typed_constraint cimport TypedConstraint
 from ballistics.dynamics.rigid_body cimport RigidBody
+from ballistics.debug.debug_ cimport glDebugDraw
 from cpython.ref cimport Py_DECREF, Py_INCREF
 
 
@@ -19,12 +20,15 @@ cdef class DiscreteDynamicsWorld:
         self.constraintSolver = constraintSolver
         self.collisionConfiguration = collisionConfiguration
         self.rigidBodies = set()
+        self.debugDrawer = NULL
         self.wrapped = new btDiscreteDynamicsWorld(dispatcher.wrapped,
                 pairCache.wrapped, constraintSolver.wrapped,
                 collisionConfiguration.wrapped)
 
     def __dealloc__(self):
         del self.wrapped
+        if self.debugDrawer:
+            del self.debugDrawer
 
     def setGravity(self, Vector3 vec):
         self.wrapped.setGravity(vec.wrapped[0])
@@ -59,3 +63,15 @@ cdef class DiscreteDynamicsWorld:
 
     def removeConstraint(self, TypedConstraint raint):
         self.wrapped.removeConstraint(raint.wrapped)
+
+    def debugDrawWorld(self):
+        self.wrapped.debugDrawWorld()
+
+    # Extra non-api methods
+
+    def enableGlDebugging(self):
+        if self.debugDrawer:
+            del self.debugDrawer
+        self.debugDrawer = <btIDebugDraw*>new glDebugDraw()
+        self.wrapped.setDebugDrawer(self.debugDrawer)
+

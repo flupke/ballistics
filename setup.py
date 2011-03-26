@@ -14,6 +14,7 @@ except ImportError:
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 
+
 wrapper_modules = [
         # linearmath
         ("ballistics.linearmath.vector3", ["BulletDynamics"]),
@@ -35,7 +36,8 @@ wrapper_modules = [
         ("ballistics.collision.shapes.capsule", ["BulletCollision"]),
         # dynamics
         ("ballistics.dynamics.rigid_body", ["BulletDynamics"]),
-        ("ballistics.dynamics.world.discrete", ["BulletDynamics"]),
+        ("ballistics.dynamics.world.discrete", ["BulletDynamics", "GL"],
+            ["ballistics/debug/gl_debug_draw.cpp"]),
         ("ballistics.dynamics.constraintsolver.base", ["BulletDynamics"]),
         ("ballistics.dynamics.constraintsolver.sequential_impulse", 
             ["BulletDynamics"]),
@@ -50,7 +52,11 @@ for mod_spec in wrapper_modules:
     if len(mod_spec) == 3:
         files += mod_spec[2]
     ext_modules.append(Extension(module, files, libraries=libs,
-        language="c++", include_dirs=["ballistics/linearmath"]))
+        language="c++", include_dirs=[
+            "ballistics/linearmath",
+            "ballistics/debug",
+        ]))
+
 
 setup(
     name = "ballistics",

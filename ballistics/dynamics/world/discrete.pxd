@@ -7,6 +7,7 @@ from ballistics.dynamics.constraintsolver.base cimport btConstraintSolver
 from ballistics.dynamics.rigid_body cimport btRigidBody
 from ballistics.dynamics.constraintsolver.typed_constraint cimport \
         btTypedConstraint
+from ballistics.debug.debug_ cimport btIDebugDraw
 
 
 cdef extern from "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h":
@@ -27,6 +28,9 @@ cdef extern from "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h":
         void addConstraint(btTypedConstraint *raint, 
                 int disableCollisionsBetweenLinkedBodies)
         void removeConstraint(btTypedConstraint *raint)
+        # From btCollisionWorld
+        void setDebugDrawer(btIDebugDraw *debugDrawer)
+        void debugDrawWorld()
 
 """
         void synchronizeMotionStates()
@@ -45,7 +49,6 @@ cdef extern from "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h":
         btConstraintSolver * getConstraintSolver()
         int getNumConstraints() 
         btTypedConstraint * getConstraint(int index)
-         btTypedConstraint * getConstraint(int index) 
         btDynamicsWorldType getWorldType() 
         void clearForces()
         void applyGravity()
@@ -62,3 +65,4 @@ cdef class DiscreteDynamicsWorld:
     cdef object constraintSolver 
     cdef object collisionConfiguration 
     cdef set rigidBodies
+    cdef btIDebugDraw *debugDrawer
