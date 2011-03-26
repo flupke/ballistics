@@ -65,13 +65,7 @@ cdef class DiscreteDynamicsWorld:
         self.wrapped.removeConstraint(raint.wrapped)
 
     def debugDrawWorld(self):
+        if not self.debugDrawer:
+            self.debugDrawer = <btIDebugDraw*>new glDebugDraw()
+            self.wrapped.setDebugDrawer(self.debugDrawer)
         self.wrapped.debugDrawWorld()
-
-    # Extra non-api methods
-
-    def enableGlDebugging(self):
-        if self.debugDrawer:
-            del self.debugDrawer
-        self.debugDrawer = <btIDebugDraw*>new glDebugDraw()
-        self.wrapped.setDebugDrawer(self.debugDrawer)
-
