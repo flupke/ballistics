@@ -7,4 +7,5 @@ cdef class TypedConstraint:
         raise TypeError("can't instantiate abstract class")
 
     def __dealloc__(self):
-        del self.wrapped
+        if self.wrapped:
+            del self.wrapped

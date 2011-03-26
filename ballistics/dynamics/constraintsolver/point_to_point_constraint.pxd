@@ -1,4 +1,7 @@
 from ballistics.dynamics.constraintsolver.typed_constraint cimport TypedConstraint
+from ballistics.dynamics.rigid_body cimport btRigidBody
+from ballistics.linearmath.vector3 cimport btVector3
+from ballistics.linearmath.common cimport btScalar
 
 
 cdef extern from "BulletDynamics/ConstraintSolver/btPoint2PointConstraint.h":
@@ -13,17 +16,10 @@ cdef extern from "BulletDynamics/ConstraintSolver/btPoint2PointConstraint.h":
         void setPivotB (btVector3 &pivotB)
         btVector3& getPivotInA() 
         btVector3& getPivotInB()
-        void setParam (int num, btScalar value, int axis=-1)
-        """
-        Override the default global value of a parameter (such as ERP or CFM),
-        optionally provide the axis (0..5). 
-        """
-        btScalar getParam (int num, int axis=-1) const
-        """
-        Return the local value of parameter 
-        """
+        void setParam (int num, btScalar value, int axis)
+        btScalar getParam (int num, int axis) 
 
 
 cdef class Point2PointConstraint(TypedConstraint):
 
-    cdef btPoint2PointConstraint *wrapped
+    pass
