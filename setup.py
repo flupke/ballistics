@@ -45,6 +45,8 @@ wrapper_modules = [
             ["BulletDynamics"]),
         ("ballistics.dynamics.constraintsolver.point_to_point_constraint",
             ["BulletDynamics"]),
+        ("ballistics.dynamics.constraintsolver.generic_6_dof_constraint",
+            ["BulletDynamics"]),
     ]
 
 ext_modules = []

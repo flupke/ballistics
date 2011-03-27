@@ -6,6 +6,14 @@ from ballistics.linearmath.vector3 cimport wrap_vector3, Vector3
 
 
 cdef class Point2PointConstraint(TypedConstraint):
+    """
+    btPoint2PointConstraint wrapper.
+
+    Constructors:
+        Point2PointConstraint(RigidBody rbA, RigidBody rbB, 
+                Vector3 pivotInA, Vector3 pivotInB)
+        Point2PointConstraint(RigidBody rbA, Vector3 pivotInA)
+    """
 
     def __init__(self, *args):
         cdef RigidBody rb_a, rb_b
@@ -23,7 +31,7 @@ cdef class Point2PointConstraint(TypedConstraint):
                         pivot_in_a.wrapped[0]))
         else:
             raise TypeError("the constructor takes either 2 or 4 "
-                    "Vector3 objects")
+                    "arguments")
 
     def updateRHS(self, timeStep):
         (<btPoint2PointConstraint*>self.wrapped).updateRHS(timeStep)

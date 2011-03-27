@@ -11,13 +11,13 @@ cdef extern from "BulletDynamics/ConstraintSolver/btPoint2PointConstraint.h":
         btPoint2PointConstraint(btRigidBody &rbA, btRigidBody &rbB, 
                 btVector3 &pivotInA, btVector3 &pivotInB)
         btPoint2PointConstraint(btRigidBody &rbA, btVector3 &pivotInA)
-        void updateRHS (btScalar timeStep)
-        void setPivotA (btVector3 &pivotA)
-        void setPivotB (btVector3 &pivotB)
+        void updateRHS(btScalar timeStep)
+        void setPivotA(btVector3 &pivotA)
+        void setPivotB(btVector3 &pivotB)
         btVector3& getPivotInA() 
         btVector3& getPivotInB()
-        void setParam (int num, btScalar value, int axis)
-        btScalar getParam (int num, int axis) 
+        void setParam(int num, btScalar value, int axis)
+        btScalar getParam(int num, int axis) 
 
 
 cdef class Point2PointConstraint(TypedConstraint):
