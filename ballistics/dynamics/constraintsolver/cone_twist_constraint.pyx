@@ -64,6 +64,9 @@ cdef class ConeTwistConstraint(TypedConstraint):
             (<btConeTwistConstraint*>self.wrapped).setLimit(swingSpan1,
                     swingSpan2, twistSpan, softness, biasFactor,
                     relaxationFactor)
+        else:
+            raise TypeError("setLimit() takes either 2 or 3 positionnal "
+                    "arguments, not %d" % len(args))
 
     def getAFrame(self):
         return wrap_transform(
