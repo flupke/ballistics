@@ -6,10 +6,11 @@ import math
 from ballistics.linearmath import Vector3, Transform, Quaternion
 from ballistics.linearmath.motion_state import DefaultMotionState
 from ballistics.collision.broadphase import DbvtBroadphase
-from ballistics.collision.dispatch import DefaultCollisionConfiguration, \
-        CollisionDispatcher
-from ballistics.collision.shapes import StaticPlaneShape, SphereShape, \
-        BoxShape, CapsuleShape, CapsuleShapeX, CapsuleShapeZ
+from ballistics.collision.dispatch import (DefaultCollisionConfiguration,
+        CollisionDispatcher)
+from ballistics.collision.shapes import (StaticPlaneShape, SphereShape, 
+        BoxShape, CapsuleShape, CapsuleShapeX, CapsuleShapeZ,
+        HeightfieldTerrainShape)
 from ballistics.dynamics.world import DiscreteDynamicsWorld
 from ballistics.dynamics.constraintsolver import SequentialImpulseConstraintSolver
 from ballistics.dynamics.rigid_body import RigidBody, RigidBodyConstructionInfo
@@ -100,7 +101,7 @@ def rigid_capsule(base=(0, 0, 0), radius=1, height=1, orientation="x",
         mass=None, rotation=Quaternion(0, 0, 0, 1), motion_state=None):
     if not isinstance(base, Vector3):
         base = Vector3(*base)
-    base_value = radius + height / 2.0
+    base_value = height / 2.0
     tmp = _capsule_axises[orientation].copy()
     tmp *= Vector3(base_value, base_value, base_value)
     base += tmp
@@ -114,5 +115,39 @@ def rigid_capsule(base=(0, 0, 0), radius=1, height=1, orientation="x",
     inertia = shape.calculateLocalInertia(mass)
     rigid_body_ci = RigidBodyConstructionInfo(mass, motion_state, shape,
             inertia)
+    rigid_body = RigidBody(rigid_body_ci)
+    return rigid_body
+
+
+def static_height_field(heights, base=(0, 0, 0), heights_scale=1.0,
+        min_height=None, max_height=None, up_axis=1, flip_quad_edges=False):
+    """
+    Create a static :class:`HeightfieldTerrainShape` :class:`RigidBody`.
+
+    *heights* must be a 2D numpy array defining the height field. Its values
+    might be scaled by *heights_scale*. *min_height* and *max_height* define
+    the bounds of the height field ; if they are left to `None`, their values
+    are extracted from *heights*.
+
+    *up_axis* defines the orientation of the height field, the default is 1,
+    meaning the heights are Y values.
+
+    Bullet re-centers the height field based on its AABB which is computed on
+    *min_height* and *max_height*. For example to make a height field lying on
+    the ground with *min_height* = 0 and *max_height* = 100, the *base* vector
+    would have to be (0, 50, 0).
+    """
+    if not isinstance(base, Vector3):
+        base = Vector3(*base)
+    if min_height is None:
+        min_height = heights.min()
+    if max_height is None:
+        max_height = heights.max()
+    shape = HeightfieldTerrainShape(heights, heights_scale, min_height,
+            max_height, up_axis, flip_quad_edges)
+    motion_state = DefaultMotionState(
+            Transform(Quaternion(0, 0, 0, 1), base))
+    rigid_body_ci = RigidBodyConstructionInfo(0, motion_state,
+            shape, Vector3(0, 0, 0))
     rigid_body = RigidBody(rigid_body_ci)
     return rigid_body

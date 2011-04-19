@@ -34,6 +34,8 @@ wrapper_modules = [
         ("ballistics.collision.shapes.sphere", ["BulletCollision"]),
         ("ballistics.collision.shapes.box", ["BulletCollision"]),
         ("ballistics.collision.shapes.capsule", ["BulletCollision"]),
+        ("ballistics.collision.shapes.height_field_terrain", 
+            ["BulletCollision"]),
         # dynamics
         ("ballistics.dynamics.rigid_body", ["BulletDynamics"]),
         ("ballistics.dynamics.world.discrete", ["BulletDynamics", "GL"],
