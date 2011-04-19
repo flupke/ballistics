@@ -119,8 +119,8 @@ def rigid_capsule(base=(0, 0, 0), radius=1, height=1, orientation="x",
     return rigid_body
 
 
-def static_height_field(heights, base=(0, 0, 0), heights_scale=1.0,
-        min_height=None, max_height=None, up_axis=1, flip_quad_edges=False):
+def static_height_field(heights, base=(0, 0, 0), min_height=None,
+        max_height=None, up_axis=1, flip_quad_edges=False):
     """
     Create a static :class:`HeightfieldTerrainShape` :class:`RigidBody`.
 
@@ -143,7 +143,7 @@ def static_height_field(heights, base=(0, 0, 0), heights_scale=1.0,
         min_height = heights.min()
     if max_height is None:
         max_height = heights.max()
-    shape = HeightfieldTerrainShape(heights, heights_scale, min_height,
+    shape = HeightfieldTerrainShape(heights, 1.0, min_height,
             max_height, up_axis, flip_quad_edges)
     motion_state = DefaultMotionState(
             Transform(Quaternion(0, 0, 0, 1), base))

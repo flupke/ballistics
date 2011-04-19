@@ -18,9 +18,8 @@ cdef class HeightfieldTerrainShape(CollisionShape):
             data_type = PHY_DOUBLE
         else:
             raise TypeError("only float32 and float64 arrays are supported")
-        heightStickWidth = data.shape[0]
-        heightStickLength = data.shape[1]
-        print heightStickWidth, heightStickLength
+        heightStickWidth = data.shape[1]
+        heightStickLength = data.shape[0]
         self.wrapped = <btCollisionShape*>(new btHeightfieldTerrainShape(
             heightStickWidth, heightStickLength, data.data, heightScale,
             minHeight, maxHeight, upAxis, data_type, flipQuadEdges))
